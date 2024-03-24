@@ -26,15 +26,15 @@
                 <td>{{ phonebookVo.hp }}</td>
                 <td>{{ phonebookVo.company }}</td>
                 <td>
-                    <button type="button">삭제하기</button>&nbsp;&nbsp;
-                    <a href="">[수정폼이동]</a>
+                    <button type="submit" v-on:click="removePhone(phonebookVo.personId)">삭제하기</button>
+                    <RouterLink v-bind:to="`/modify/${phonebookVo.personId}`">[수정폼이동]</RouterLink>
                 </td>
             </tr>
         </tbody>	
     </table>
     <br>
 
-<a href="">등록폼 이동</a>
+<a href="/write">등록폼 이동</a>
 </template>
 
 
@@ -52,6 +52,7 @@ export default {
                 hp: "",
                 company: ""
             }
+            
         };
     },
     methods: {
@@ -68,6 +69,29 @@ export default {
             }).then(response => {
                 console.log(response); //수신데이타
                 this.phonebookList = response.data;
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+        removePhone(personId){
+            console.log("Delete");
+            axios({
+                method: 'delete',  //put,post,delete
+                url: 'http://localhost:9000/api/phones/'+ personId,
+                headers: { "Content-Type": "application/json; charset=utf-8" }, //전송타입
+                //params: phonebookVo, //get방식 파라미터로 값이 전달
+                data: {personId}, //put, post, delete 방식 자동으로 JSON으로 변환 전달
+
+                responseType: 'json' //수신타입
+            }).then(response => {
+                console.log(response.data); //수신데이타
+                
+                if(response.data.count>0){
+					this.phonebookList.splice(response.data, 1);
+				} else {
+					alert("삭제에 실패했습니다");
+				}
+                
             }).catch(error => {
                 console.log(error);
             });

@@ -6,17 +6,17 @@ import modifyFormView from '../views/modifyFormView.vue'
 const routes = [
   {
     path: '/write',
-    name: 'writeFormView',
+    name: '/write',
     component: writeFormView
   },
   {
     path: '/',
-    name: 'listView',
+    name: '/',
     component: listView
   },
   {
-    path: '/modify',
-    name: 'modifyFormView',
+    path: '/modify/:personId',
+    name: '/modify',
     component: modifyFormView
   }
 ]
